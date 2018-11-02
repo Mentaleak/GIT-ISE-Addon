@@ -1,0 +1,19 @@
+﻿Register-ObjectEvent -InputObject $psISE.CurrentFile -Verbose  -EventName PropertyChanged -Action `
+{ 
+ if($Event.SourceArgs.isSaved)
+ {
+ Invoke-BeautifyAndGitPushCommit -file ($Event.SourceArgs.FullPath)
+ }
+}
+
+
+#requires powershell-beautifier, PSGit                       
+function Invoke-BeautifyAndGitPushCommit(){
+    param(
+    [Parameter(mandatory = $true)] [string]$FilePath
+    )
+    $File = get-childitem "$FilePath"
+    $Folder=$File.Directory.FullName
+    $test= Edit-DTWBeautifyScript C:\temp\MyFile.ps1 -StandardOutput   
+
+}
