@@ -19,6 +19,7 @@ function initialize-gitBeautifier () {
 }
 
 
+
 function add-filewatcher () {
 	param($file)
 
@@ -56,9 +57,6 @@ function Invoke-BeautifyAndGitPushCommit () {
 	Copy-Item -Path $TMPFilePath -Destination $FilePath -Force
 	Write-Host "Git-ing $Folder"
 	$global:AutoGitData=Add-GitAutoCommitPush
-
-
-
 
 }
 
