@@ -1,5 +1,5 @@
 ﻿function test-a ()
 {
-	#test 5
+	#test5
 
 }
