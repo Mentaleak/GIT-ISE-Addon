@@ -1,21 +1,21 @@
 ﻿
-function initiate-gitBeautifier () {
-    if(!(Test-GitAuth -nobreak)){	
-        connect-github
-    }
-    if(Test-GitAuth){
-	    Get-EventSubscriber -Force | Unregister-Event -Force
-	    Register-ObjectEvent -InputObject $psISE.CurrentPowerShellTab.Files CollectionChanged -Action {
-		    $global:evargs = $eventArgs
-		    if ($eventArgs.Action -eq "Add")
-		    {
-			    $file = $eventArgs.newitems[0]
-			    Write-Host "add watch for $($file.Displayname)"
-			    add-filewatcher $file
-		    }
+function initialize-gitBeautifier () {
+	if (!(Test-GitAuth -nobreak)) {
+		Connect-github
+	}
+	if (Test-GitAuth) {
+		Get-EventSubscriber -Force | Unregister-Event -Force
+		Register-ObjectEvent -InputObject $psISE.CurrentPowerShellTab.Files CollectionChanged -Action {
+			$global:evargs = $eventArgs
+			if ($eventArgs.Action -eq "Add")
+			{
+				$file = $eventArgs.newitems[0]
+				Write-Host "add watch for $($file.Displayname)"
+				add-filewatcher $file
+			}
 
-	    }
-    }
+		}
+	}
 }
 
 
