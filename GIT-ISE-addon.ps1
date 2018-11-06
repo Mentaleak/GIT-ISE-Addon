@@ -38,17 +38,6 @@ function add-filewatcher () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 # requires powershell-beautifier, PSGit                       
 function Invoke-BeautifyAndGitPushCommit () {
 	param(
@@ -72,3 +61,5 @@ function Invoke-BeautifyAndGitPushCommit () {
 
 
 }
+
+#CLose Tab, Reopen
