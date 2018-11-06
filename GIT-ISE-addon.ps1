@@ -55,7 +55,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 	Edit-DTWBeautifyScript $TMPFilePath -IndentType Tabs
 	Copy-Item -Path $TMPFilePath -Destination $FilePath -Force
 	Write-Host "Git-ing $Folder"
-	Add-GitAutoCommitPush
+	$global:AutoGitData=Add-GitAutoCommitPush
 
 
 
