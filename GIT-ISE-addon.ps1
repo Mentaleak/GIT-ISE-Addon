@@ -1,5 +1,4 @@
-﻿
-function initialize-gitBeautifier () {
+﻿function initialize-gitBeautifier () {
     if(!(Test-GitAuth -nobreak)){	
         connect-github
     }
@@ -56,8 +55,10 @@ function Invoke-BeautifyAndGitPushCommit () {
 	Edit-DTWBeautifyScript $TMPFilePath -IndentType Tabs
 	Copy-Item -Path $TMPFilePath -Destination $FilePath -Force
 	Write-Host "Git-ing $Folder"
-	$global:AutoGitData=Add-GitAutoCommitPush
+	$global:AutoGitData=Add-GitAutoCommitPush -ProjectPath $Folder
 
 }
+
+initialize-gitBeautifier
 
 #CLose Tab, Reopen
