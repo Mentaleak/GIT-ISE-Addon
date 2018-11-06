@@ -1,4 +1,4 @@
 ﻿function test-a ()
 {
-	#test3
+	#test
 }
