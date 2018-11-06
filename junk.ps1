@@ -1,10 +1,4 @@
-﻿asdsad
-
-
-s
-
-
-ddddd
-
-
-fghgfh
+﻿function test-a ()
+{
+	#test2
+}
