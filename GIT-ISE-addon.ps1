@@ -11,7 +11,6 @@ function Invoke-BeautifyAndGitPushCommit () {
 		$psISE.CurrentFile.Save()
 		#close File
 		$psISE.CurrentPowerShellTab.Files.Remove($psISE.CurrentPowerShellTab.Files.SelectedFile)
-
 		#get file
 		$File = Get-ChildItem "$FilePath"
 		$Folder = $File.Directory.FullName
@@ -41,13 +40,30 @@ function Invoke-BeautifyAndGitPushCommit () {
 }
 
 
-$menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("Custom",$null,$null)
+#$menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("Custom",$null,$null)
 $menu.Submenus.Add("Save-BeautifyGitPush",{ Invoke-BeautifyAndGitPushCommit },"CTRL+Shift+S")
 #$menu.Submenus.Remove($menu.Submenus[1])
 
+function install-SaveBeautifyGitPush () {
+	$IBAGPC = Get-ChildItem function:\ | Where-Object { $_.Name -eq "Invoke-BeautifyAndGitPushCommit" }
+	$ScriptString = ""
+	$psProfilePath = "$($env:USERPROFILE)\MY Documents\windowspowershell\Microsoft.PowerShellISE_profile.ps1"
+	if (Test-Path $psProfilePath) {
+		$ScriptString = Get-Content $psProfilePath
+	}
+	if (!($ScriptString -match "This marker is to add the SaveBeautifyGitPush"))
+	{
+		$ScriptString += "# This marker is to add the SaveBeautifyGitPush `n"
+		$ScriptString += "Import-module PSTools `n"
+		$ScriptString += "Import-module PSGit `n"
+		$ScriptString += "function Invoke-BeautifyAndGitPushCommit () { `n"
+		$ScriptString += $IBAGPC.Definition
+		$ScriptString += "`n}`n `$menu = `$psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(`"Custom`",$null,$null) `n `$menu.Submenus.Add(`"Save-BeautifyGitPush`",{ Invoke-BeautifyAndGitPushCommit },`"CTRL+Shift+S`")"
+		$ScriptString | Out-File $psProfilePath
+	}
 
 
-
+}
 
 
 
@@ -107,9 +123,3 @@ function add-filewatcher () {
 	}
 
 }
-
-
-
-#initialize-gitBeautifier
-
-#CLose Tab, Reopen
