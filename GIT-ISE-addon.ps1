@@ -1,4 +1,12 @@
-﻿function initialize-gitBeautifier () {
+﻿
+$menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("Custom",$null,$null)
+$menu.submenus.Add("Save-GitPush",{$psISE.CurrentFile.Save();Add-GitAutoCommitPush}, "CTRL+Shift+S")
+$menu.Submenus.Remove($menu.Submenus[1])
+
+
+
+
+function initialize-gitBeautifier () {
     if(!(Test-GitAuth -nobreak)){	
         connect-github
     }
@@ -59,6 +67,6 @@ function Invoke-BeautifyAndGitPushCommit () {
 
 }
 
-initialize-gitBeautifier
+#initialize-gitBeautifier
 
 #CLose Tab, Reopen
