@@ -1,6 +1,9 @@
 ﻿
 # requires powershell-beautifier, PSGit                       
 function Invoke-BeautifyAndGitPushCommit () {
+	param(
+		$fixes
+	)
 	if (!(Test-GitAuth -nobreak)) {
 		Connect-github
 	}
@@ -32,19 +35,28 @@ function Invoke-BeautifyAndGitPushCommit () {
 
 		#Push Git
 		Write-Host "Git-ing $Folder"
-		Add-GitAutoCommitPush -ProjectPath $Folder
+		if ($fixes) {
+			Add-GitAutoCommitPush -ProjectPath $Folder -fixes $fixes
+		} else {
+			Add-GitAutoCommitPush -ProjectPath $Folder
+		}
 
 		#reopen file
 		psEdit $filepath
 	}
 }
 
-
-#$menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("Custom",$null,$null)
+<#
+$menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("GIT",$null,$null)
 $menu.Submenus.Add("Save-BeautifyGitPush",{ Invoke-BeautifyAndGitPushCommit },"CTRL+Shift+S")
-#$menu.Submenus.Remove($menu.Submenus[1])
+$menu.Submenus.Add("Save-BeautifyGitPushFIXES",{ Invoke-BeautifyAndGitPushCommit -fixes get-gitFixesUI},"CTRL+ALT+S")
+
+$menu.Submenus.Remove($menu.Submenus[1])
+#>
+
 
 function install-SaveBeautifyGitPush () {
+
 	$IBAGPC = Get-ChildItem function:\ | Where-Object { $_.Name -eq "Invoke-BeautifyAndGitPushCommit" }
 	$ScriptString = ""
 	$psProfilePath = "$($env:USERPROFILE)\MY Documents\windowspowershell\Microsoft.PowerShellISE_profile.ps1"
@@ -58,7 +70,7 @@ function install-SaveBeautifyGitPush () {
 		$ScriptString += "Import-module PSGit `n"
 		$ScriptString += "function Invoke-BeautifyAndGitPushCommit () { `n"
 		$ScriptString += $IBAGPC.Definition
-		$ScriptString += "`n}`n `$menu = `$psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(`"Custom`",$null,$null) `n `$menu.Submenus.Add(`"Save-BeautifyGitPush`",{ Invoke-BeautifyAndGitPushCommit },`"CTRL+Shift+S`")"
+		$ScriptString += "`n}`n `$menu = `$psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add(`"GIT`",$null,$null) `n `$menu.Submenus.Add(`"Save-BeautifyGitPush`",{ Invoke-BeautifyAndGitPushCommit },`"CTRL+Shift+S`")"
 		$ScriptString | Out-File $psProfilePath
 	}
 
