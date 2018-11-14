@@ -55,6 +55,7 @@ $menu.Submenus.Add("Save-BeautifyGitPush",{ Invoke-BeautifyAndGitPushCommit },"C
 $menu.Submenus.Add("Save-BeautifyGitPushFIXES",{ Invoke-BeautifyAndGitPushCommit -fixes get-gitFixesUI},"CTRL+ALT+S")
 $menu.Submenus.Add("END DAY PUSH",{ $psISE.CurrentPowerShellTab.files.fullpath |foreach{Invoke-BeautifyAndGitPushCommit -filepath $_ -close}},"CTRL+Shift+ALT+S")
 $menu.Submenus.Remove($menu.Submenus[2])
+
 #>
 
 
