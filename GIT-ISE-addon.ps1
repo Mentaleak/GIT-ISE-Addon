@@ -2,7 +2,8 @@
 # requires powershell-beautifier, PSGit                       
 function Invoke-BeautifyAndGitPushCommit () {
 	param(
-		$fixes
+		$fixes,
+		$filepath = $psISE.CurrentPowerShellTab.Files.SelectedFile.FullPath
 	)
 	if (!(Test-GitAuth -nobreak)) {
 		Connect-github
@@ -50,7 +51,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 $menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("GIT",$null,$null)
 $menu.Submenus.Add("Save-BeautifyGitPush",{ Invoke-BeautifyAndGitPushCommit },"CTRL+Shift+S")
 $menu.Submenus.Add("Save-BeautifyGitPushFIXES",{ Invoke-BeautifyAndGitPushCommit -fixes get-gitFixesUI},"CTRL+ALT+S")
-
+$menu.Submenus.Add("END DAY PUSH",{ $psISE.CurrentPowerShellTab.files.fullpath |foreach{Invoke-BeautifyAndGitPushCommit}},"CTRL+Shift+ALT+S")
 $menu.Submenus.Remove($menu.Submenus[1])
 #>
 
