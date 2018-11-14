@@ -1,5 +1,4 @@
-﻿
-# requires powershell-beautifier, PSGit                       
+﻿# requires powershell-beautifier, PSGit                       
 function Invoke-BeautifyAndGitPushCommit () {
 	param(
 		$fixes,
@@ -11,7 +10,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 	}
 	else {
 		#Save current File
-		$psISE.CurrentFile.Save()
+		($psise.CurrentPowerShellTab.Files | Where-Object { $_.FullPath -eq "$filepath" }).Save()
 		#close File
 		$psISE.CurrentPowerShellTab.Files.Remove($psISE.CurrentPowerShellTab.Files.SelectedFile)
 		#get file
