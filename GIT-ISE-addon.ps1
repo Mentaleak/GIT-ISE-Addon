@@ -10,8 +10,6 @@ function Invoke-BeautifyAndGitPushCommit () {
 		Connect-github
 	}
 	else {
-		#get File Path
-		$filepath = $psISE.CurrentPowerShellTab.Files.SelectedFile.FullPath
 		#Save current File
 		$psISE.CurrentFile.Save()
 		#close File
@@ -53,7 +51,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 $menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("GIT",$null,$null)
 $menu.Submenus.Add("Save-BeautifyGitPush",{ Invoke-BeautifyAndGitPushCommit },"CTRL+Shift+S")
 $menu.Submenus.Add("Save-BeautifyGitPushFIXES",{ Invoke-BeautifyAndGitPushCommit -fixes get-gitFixesUI},"CTRL+ALT+S")
-$menu.Submenus.Add("END DAY PUSH",{ $psISE.CurrentPowerShellTab.files.fullpath |foreach{Invoke-BeautifyAndGitPushCommit -filepath $_ -close}},"CTRL+Shift+ALT+S")
+$menu.Submenus.Add("END DAY PUSH",{ $psISE.CurrentPowerShellTab.files.fullpath |foreach{Invoke-BeautifyAndGitPushCommit -filepath "$($_)" -close}},"CTRL+Shift+ALT+S")
 $menu.Submenus.Remove($menu.Submenus[2])
 
 #>
