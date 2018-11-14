@@ -12,7 +12,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 		#Save current File
 		($psise.CurrentPowerShellTab.Files | Where-Object { $_.FullPath -eq "$filepath" }).Save()
 		#close File
-		$psISE.CurrentPowerShellTab.Files.Remove($psISE.CurrentPowerShellTab.Files.SelectedFile)
+		$psISE.CurrentPowerShellTab.Files.Remove(($psise.CurrentPowerShellTab.Files | Where-Object { $_.FullPath -eq "$filepath" }))
 		#get file
 		$File = Get-ChildItem "$FilePath"
 		$Folder = $File.Directory.FullName
