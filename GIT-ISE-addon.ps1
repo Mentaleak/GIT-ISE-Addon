@@ -1,7 +1,7 @@
 ﻿# requires powershell-beautifier, PSGit                       
 function Invoke-BeautifyAndGitPushCommit () {
 	param(
-		$fixes,
+		[switch]$fixes,
 		$filepath = $psISE.CurrentPowerShellTab.Files.SelectedFile.FullPath,
 		[switch]$close
 	)
@@ -16,7 +16,10 @@ function Invoke-BeautifyAndGitPushCommit () {
 		#get file
 		$File = Get-ChildItem "$FilePath"
 		$Folder = $File.Directory.FullName
-
+		if ($fixes) {
+			$repodata = Get-GitRepo $Folder
+			$fixes = get-gitfixesUI $repodata.full_name
+		}
 		#MAKE COPY local for beautifying
 		$TMPFolderPath = "$($env:APPDATA)\PSBeautifier-TMP\"
 		if (!(Test-Path $TMPFolderPath)) {
@@ -49,10 +52,9 @@ function Invoke-BeautifyAndGitPushCommit () {
 <#
 $menu = $psise.CurrentPowerShellTab.AddOnsMenu.Submenus.Add("GIT",$null,$null)
 $menu.Submenus.Add("Save-BeautifyGitPush",{ Invoke-BeautifyAndGitPushCommit },"CTRL+Shift+S")
-$menu.Submenus.Add("Save-BeautifyGitPushFIXES",{ Invoke-BeautifyAndGitPushCommit -fixes get-gitFixesUI},"CTRL+ALT+S")
+$menu.Submenus.Add("Save-BeautifyGitPushFIXES",{ Invoke-BeautifyAndGitPushCommit -fixes},"CTRL+ALT+S")
 $menu.Submenus.Add("END DAY PUSH",{ $psISE.CurrentPowerShellTab.files.fullpath |foreach{Invoke-BeautifyAndGitPushCommit -filepath "$($_)" -close}},"CTRL+Shift+ALT+S")
 $menu.Submenus.Remove($menu.Submenus[2])
-
 #>
 
 
