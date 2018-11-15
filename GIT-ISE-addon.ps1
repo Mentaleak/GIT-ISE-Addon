@@ -18,7 +18,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 		$Folder = $File.Directory.FullName
 		if ($fixes) {
 			$repodata = Get-GitRepo $Folder
-			$fixes = get-gitfixesUI $repodata.full_name
+			$fixeslist = get-gitfixesUI $repodata.full_name
 		}
 		#MAKE COPY local for beautifying
 		$TMPFolderPath = "$($env:APPDATA)\PSBeautifier-TMP\"
@@ -37,7 +37,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 
 		#Push Git
 		Write-Host "Git-ing $Folder"
-		if ($fixes) {
+		if ($fixeslist) {
 			Add-GitAutoCommitPush -ProjectPath $Folder -fixes $fixes
 		} else {
 			Add-GitAutoCommitPush -ProjectPath $Folder
