@@ -8,7 +8,7 @@ function Invoke-BeautifyAndGitPushCommit () {
 	if (!(Test-GitAuth -nobreak)) {
 		Connect-github
 	}
-	else {
+	if (Test-GitAuth) {
 		#Save current File
 		($psise.CurrentPowerShellTab.Files | Where-Object { $_.FullPath -eq "$filepath" }).Save()
 		#close File
